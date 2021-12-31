@@ -56,7 +56,7 @@ public class ImagePool : MonoBehaviour
     private List<string> FilePaths;
     private Queue<string> FileQueue;
     public GameObject Grid; //Grid panel you want to add all your images and videos to
-    public int NumImagesPerRow = 5;
+    public int NumImagesPerRow = 8;
     public ImagePool()
     {
         FilePaths = new List<string>();
@@ -77,7 +77,7 @@ public class ImagePool : MonoBehaviour
     {
         rectWidth = Screen.width / NumImagesPerRow;
         rectHeight = (int) (rectWidth * 1920.0 / 1080.0);
-        gridElementY += rectHeight * 2;
+        gridElementY += rectHeight;
         //sets squares to appropriate size for images to size themselves to
         RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth, rectHeight));
         RawImage img = Grid.AddComponent<RawImage>();
@@ -118,8 +118,6 @@ public class ImagePool : MonoBehaviour
              print(file.ToString());
         }
         FileQueue = new Queue<string>(FilePaths);
-        GenerateRow();
-        GenerateRow();
         GenerateRow();
         GenerateRow();
         GenerateRow();
@@ -292,7 +290,7 @@ public class ImagePool : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine(FadeImage(false, img));
+                    //StartCoroutine(FadeImage(false, img));
                 }
             }
 

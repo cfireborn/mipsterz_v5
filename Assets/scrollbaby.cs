@@ -38,8 +38,11 @@ public class scrollbaby : MonoBehaviour
                     //time to go from offscreen to offscreen if at edges is exactly: 1x rectangle height + screen height,
                     //+ 2 seconds for each pause.
                     //There will be a number of pauses with it on screen = number of rows on screen = screen height / image height
-                    timeToGoFromOffscreenToOffScreen = ((imgPool.rectHeight + Screen.height) + (Screen.height % imgPool.rectHeight)) / (distPerSecond +
-                                                       2.0f * ((int) (Screen.height / imgPool.rectHeight) + 2));
+                    timeToGoFromOffscreenToOffScreen = (((imgPool.rectHeight * (Screen.height / imgPool.rectHeight) 
+                                                          + Screen.height) + 
+                                                         (Screen.height % imgPool.rectHeight)) 
+                                                        / distPerSecond) 
+                                                        + 2.0f * ((int) (Screen.height / imgPool.rectHeight) + 2);
                     imgPool.GenerateRow();
                     generateRow = false;
                 }
