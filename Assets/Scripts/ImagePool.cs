@@ -121,7 +121,6 @@ public class ImagePool : MonoBehaviour
         GenerateRow();
         GenerateRow();
         GenerateRow();
-        GenerateRow();
     }
     
     IEnumerator SelfDestruct(GameObject element)
@@ -160,8 +159,8 @@ public class ImagePool : MonoBehaviour
     
     IEnumerator SlideObject(bool slideAway, GameObject gridElement)
     {
-        float offset = 400;
-        float seconds = 1.5f;
+        float offset = 1000;
+        float seconds = 4f;
         Vector3 initialpos = gridElement.transform.position;
         // fade from opaque to transparent 
         if (slideAway)
@@ -170,9 +169,10 @@ public class ImagePool : MonoBehaviour
             for (float i = seconds; i >= 0; i -= Time.deltaTime)
             {
                 // set color with i as alpha
-                gridElement.transform.position = initialpos + (Vector3.down * offset * (i * i) / (seconds * seconds));
+                gridElement.transform.position = initialpos + Vector3.down * offset * ((i * i) / (seconds * seconds));
                 yield return null;
             }
+            gridElement.transform.position = initialpos;
         }
         // fade from transparent to opaque
         else
