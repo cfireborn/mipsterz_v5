@@ -214,57 +214,69 @@ public class ImagePool : MonoBehaviour
                 //compare texture height and width to determine appropriate positioning
                 //if width / 1080 / height / 1920 == 2, then double width of rectangle, position it an extra .5 width over
                 destroyMe = false; 
+                
                 if (Math.Abs(2 - (img.texture.width / 1080.0) / (img.texture.height / 1920.0)) < EPSILON)
                 {
-                    RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 2, rectHeight));
-                    RawImage imgparent = Grid.GetComponent<RawImage>();
-                    imgparent.texture = tex;
-                    imgparent.SetNativeSize();
                     if (i >= NumImagesPerRow - 1)
                     {
                         Debug.Log("skipping: Row: " + gridElementY + "col: " + i);
                         destroyMe = true;
                     }
-                    i += 1;
-                    gridElementX += rectWidth;
-                    localPos.x += rectWidth * 0.5f;
-                    gridElement.transform.SetPositionAndRotation(localPos,localRot);
-                    Debug.Log("two width, x position = " + localPos.x + " and next element = " + gridElementX);
+                    else
+                    {
+                        RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 2, rectHeight));
+                        RawImage imgparent = Grid.GetComponent<RawImage>();
+                        imgparent.texture = tex;
+                        imgparent.SetNativeSize();
+                        i += 1;
+                        gridElementX += rectWidth;
+                        localPos.x += rectWidth * 0.5f;
+                        gridElement.transform.SetPositionAndRotation(localPos,localRot);
+                        Debug.Log("two width, x position = " + localPos.x + " and next element = " + gridElementX);
+                    }
                 }
                 //if == 3, then triple width of rectangle, position it an extra 1 width over
                 else if (Math.Abs(3 - ((img.texture.width / 1080.0) / (img.texture.height / 1920.0))) < EPSILON)
                 {
-                    RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 3, rectHeight));
-                    RawImage imgparent = Grid.GetComponent<RawImage>();
-                    imgparent.texture = tex;
-                    imgparent.SetNativeSize();
                     if (i >= NumImagesPerRow - 2)
                     {
                         Debug.Log("skipping: Row: " + gridElementY + "col: " + i);
                         destroyMe = true;
                     }
-                    i += 2;
-                    gridElementX += rectWidth * 2;
-                    localPos.x += rectWidth * 1f;
-                    gridElement.transform.SetPositionAndRotation(localPos, localRot);
-                    Debug.Log("three width, x position = " + localPos.x + " and next element = " + gridElementX);
+                    else
+                    {
+                        RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 3, rectHeight));
+                        RawImage imgparent = Grid.GetComponent<RawImage>();
+                        imgparent.texture = tex;
+                        imgparent.SetNativeSize();
+                    
+                        i += 2;
+                        gridElementX += rectWidth * 2;
+                        localPos.x += rectWidth * 1f;
+                        gridElement.transform.SetPositionAndRotation(localPos, localRot);
+                        Debug.Log("three width, x position = " + localPos.x + " and next element = " + gridElementX);
+                    }
                 }//if == 4, then quadrouple width of rectangle, move it extra 1.5 over
                 else if (Math.Abs(4 - ((img.texture.width / 1080.0) / (img.texture.height / 1920.0))) < EPSILON)
                 {
-                    RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 4, rectHeight));
-                    RawImage imgparent = Grid.GetComponent<RawImage>();
-                    imgparent.texture = tex;
-                    imgparent.SetNativeSize();
                     if (i >= NumImagesPerRow - 3)
                     {
                         Debug.Log("skipping: Row: " + gridElementY + "col: " + i);
                         destroyMe = true;
                     }
-                    i += 3;
-                    gridElementX += rectWidth * 3;
-                    localPos.x += rectWidth * 1.5f;
-                    gridElement.transform.SetPositionAndRotation(localPos, localRot);
-                    Debug.Log("four width, x position = " + localPos.x + " and next element = " + gridElementX);
+                    else
+                    {
+                        RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 4, rectHeight));
+                        RawImage imgparent = Grid.GetComponent<RawImage>();
+                        imgparent.texture = tex;
+                        imgparent.SetNativeSize();
+                    
+                        i += 3;
+                        gridElementX += rectWidth * 3;
+                        localPos.x += rectWidth * 1.5f;
+                        gridElement.transform.SetPositionAndRotation(localPos, localRot);
+                        Debug.Log("four width, x position = " + localPos.x + " and next element = " + gridElementX);
+                    }
                 }
 
                 // ReadImageAsync(img, filePath);
@@ -274,6 +286,9 @@ public class ImagePool : MonoBehaviour
                 if (destroyMe)
                 {
                     Destroy(gridElement);
+                    //try this iteration again
+                    i--;
+                    gridElementX -= rectWidth;
                 }
                 else
                 {
