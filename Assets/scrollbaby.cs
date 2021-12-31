@@ -18,7 +18,7 @@ public class scrollbaby : MonoBehaviour
     void Start()
     {
         //we want the distance per second to try and remove the images from off screen to off screen in 20 seconds.
-        distPerSecond = Screen.height / 16.0f;
+        distPerSecond = Screen.height / 12.0f;
     }
 
     //Update is called once per frame

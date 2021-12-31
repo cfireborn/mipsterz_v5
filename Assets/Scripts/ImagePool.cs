@@ -157,6 +157,35 @@ public class ImagePool : MonoBehaviour
             }
         }
     }
+    
+    IEnumerator SlideObject(bool slideAway, GameObject gridElement)
+    {
+        float offset = 400;
+        float seconds = 1.5f;
+        Vector3 initialpos = gridElement.transform.position;
+        // fade from opaque to transparent 
+        if (slideAway)
+        {
+            // loop over seconds backwards
+            for (float i = seconds; i >= 0; i -= Time.deltaTime)
+            {
+                // set color with i as alpha
+                gridElement.transform.position = initialpos + (Vector3.down * offset * (i * i) / (seconds * seconds));
+                yield return null;
+            }
+        }
+        // fade from transparent to opaque
+        else
+        {
+            // loop over 2 seconds
+            for (float i = 0; i <= seconds; i += Time.deltaTime)
+            {
+                // set color with i as alpha
+                gridElement.transform.position = initialpos + (Vector3.up * offset * (i * i) / (seconds * seconds));
+                yield return null;
+            }
+        }
+    }
      
     private const double EPSILON = 0.03;
     public void GenerateRow()
@@ -297,6 +326,7 @@ public class ImagePool : MonoBehaviour
             if (!destroyMe)
             {
                 StartCoroutine(SelfDestruct(gridElement));
+                StartCoroutine(SlideObject(true, gridElement));
             }
             //Set up for the next x
             gridElementX += rectWidth;
