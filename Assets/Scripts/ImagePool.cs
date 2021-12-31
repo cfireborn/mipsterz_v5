@@ -129,7 +129,7 @@ public class ImagePool : MonoBehaviour
     IEnumerator SelfDestruct(GameObject element)
     {
         float lifespan = scrollbaby.timeToGoFromOffscreenToOffScreen;
-        Debug.Log("lifespan of object is " + lifespan);
+        //Debug.Log("lifespan of object is " + lifespan);
         yield return new WaitForSeconds(lifespan);
         Destroy(element);
     }
@@ -160,11 +160,11 @@ public class ImagePool : MonoBehaviour
         }
     }
      
+    private const double EPSILON = 0.03;
     public void GenerateRow()
     {
         Debug.Log(gridElementY + " is the Y for this row");
         int gridElementX = 0 + rectWidth/2;
-        // add 5 grid elements across the bottom
         for (int i = 0; i < NumImagesPerRow; i++)
         {
             GameObject gridElement = new GameObject();
@@ -193,6 +193,7 @@ public class ImagePool : MonoBehaviour
                 RawImage img = gridElement.AddComponent<RawImage>();
                 img.texture = tex;
                 img.SetNativeSize();
+                Debug.Log("Video" + localPos.x + " and next element = " + gridElementX);
             }
             else if (filePath.Contains(".jpg") || filePath.Contains(".png")) //if image
             {
@@ -200,12 +201,20 @@ public class ImagePool : MonoBehaviour
                 // AspectRatioFitter aspectRatioFitter = imgElement.AddComponent<AspectRatioFitter>();
                 // aspectRatioFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;    
                 RawImage img = gridElement.AddComponent<RawImage>();
+                
+                { //reset to 1x1
+                    RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth, rectHeight));
+                    RawImage imgparent = Grid.GetComponent<RawImage>();
+                    imgparent.texture = tex;
+                    imgparent.SetNativeSize();
+                }
+                
                 img.texture = www.texture;
                 //correct parent rect size before setting native size
                 //compare texture height and width to determine appropriate positioning
                 //if width / 1080 / height / 1920 == 2, then double width of rectangle, position it an extra .5 width over
                 destroyMe = false; 
-                if (Double.Epsilon < 2 - ((img.texture.width / 1080.0) / (img.texture.height / 1920.0)))
+                if (Math.Abs(2 - (img.texture.width / 1080.0) / (img.texture.height / 1920.0)) < EPSILON)
                 {
                     RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 2, rectHeight));
                     RawImage imgparent = Grid.GetComponent<RawImage>();
@@ -213,15 +222,17 @@ public class ImagePool : MonoBehaviour
                     imgparent.SetNativeSize();
                     if (i >= NumImagesPerRow - 1)
                     {
+                        Debug.Log("skipping: Row: " + gridElementY + "col: " + i);
                         destroyMe = true;
                     }
                     i += 1;
                     gridElementX += rectWidth;
-                    localPos.x += rectWidth * 0.5f;
+                    localPos.x += rectWidth * 0f;
                     gridElement.transform.SetPositionAndRotation(localPos,localRot);
+                    Debug.Log("two width, x position = " + localPos.x + " and next element = " + gridElementX);
                 }
                 //if == 3, then triple width of rectangle, position it an extra 1 width over
-                if (Double.Epsilon < 3 - ((img.texture.width / 1080.0) / (img.texture.height / 1920.0)))
+                else if (Math.Abs(3 - ((img.texture.width / 1080.0) / (img.texture.height / 1920.0))) < EPSILON)
                 {
                     RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 3, rectHeight));
                     RawImage imgparent = Grid.GetComponent<RawImage>();
@@ -229,14 +240,16 @@ public class ImagePool : MonoBehaviour
                     imgparent.SetNativeSize();
                     if (i >= NumImagesPerRow - 2)
                     {
+                        Debug.Log("skipping: Row: " + gridElementY + "col: " + i);
                         destroyMe = true;
                     }
                     i += 2;
                     gridElementX += rectWidth * 2;
-                    localPos.x += rectWidth * 1f;
+                    localPos.x += rectWidth * 0.5f;
                     gridElement.transform.SetPositionAndRotation(localPos, localRot);
+                    Debug.Log("three width, x position = " + localPos.x + " and next element = " + gridElementX);
                 }//if == 4, then quadrouple width of rectangle, move it extra 1.5 over
-                if (Double.Epsilon < 4 - ((img.texture.width / 1080.0) / (img.texture.height / 1920.0)))
+                else if (Math.Abs(4 - ((img.texture.width / 1080.0) / (img.texture.height / 1920.0))) < EPSILON)
                 {
                     RenderTexture tex = new RenderTexture(RenderTexture.GetTemporary(rectWidth * 4, rectHeight));
                     RawImage imgparent = Grid.GetComponent<RawImage>();
@@ -244,12 +257,14 @@ public class ImagePool : MonoBehaviour
                     imgparent.SetNativeSize();
                     if (i >= NumImagesPerRow - 3)
                     {
+                        Debug.Log("skipping: Row: " + gridElementY + "col: " + i);
                         destroyMe = true;
                     }
                     i += 3;
                     gridElementX += rectWidth * 3;
-                    localPos.x += rectWidth * 1.5f;
+                    localPos.x += rectWidth * 1f;
                     gridElement.transform.SetPositionAndRotation(localPos, localRot);
+                    Debug.Log("four width, x position = " + localPos.x + " and next element = " + gridElementX);
                 }
 
                 // ReadImageAsync(img, filePath);
@@ -277,6 +292,7 @@ public class ImagePool : MonoBehaviour
         //Set up for the next y
         gridElementY -= rectHeight;
     }
+
 
     // IEnumerator Load (RawImage img, WWW www, string filePath) {
     //     while(!www.isDone)
