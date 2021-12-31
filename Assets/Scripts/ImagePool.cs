@@ -227,7 +227,7 @@ public class ImagePool : MonoBehaviour
                     }
                     i += 1;
                     gridElementX += rectWidth;
-                    localPos.x += rectWidth * 0f;
+                    localPos.x += rectWidth * 0.5f;
                     gridElement.transform.SetPositionAndRotation(localPos,localRot);
                     Debug.Log("two width, x position = " + localPos.x + " and next element = " + gridElementX);
                 }
@@ -245,7 +245,7 @@ public class ImagePool : MonoBehaviour
                     }
                     i += 2;
                     gridElementX += rectWidth * 2;
-                    localPos.x += rectWidth * 0.5f;
+                    localPos.x += rectWidth * 1f;
                     gridElement.transform.SetPositionAndRotation(localPos, localRot);
                     Debug.Log("three width, x position = " + localPos.x + " and next element = " + gridElementX);
                 }//if == 4, then quadrouple width of rectangle, move it extra 1.5 over
@@ -262,7 +262,7 @@ public class ImagePool : MonoBehaviour
                     }
                     i += 3;
                     gridElementX += rectWidth * 3;
-                    localPos.x += rectWidth * 1f;
+                    localPos.x += rectWidth * 1.5f;
                     gridElement.transform.SetPositionAndRotation(localPos, localRot);
                     Debug.Log("four width, x position = " + localPos.x + " and next element = " + gridElementX);
                 }
