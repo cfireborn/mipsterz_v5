@@ -157,11 +157,10 @@ public class ImagePool : MonoBehaviour
         }
     }
     
-    IEnumerator SlideObject(bool slideAway, GameObject gridElement)
+    IEnumerator SlideObject(bool slideAway, GameObject gridElement, Vector3 initialpos)
     {
         float offset = 1000;
         float seconds = 4f;
-        Vector3 initialpos = gridElement.transform.position;
         // fade from opaque to transparent 
         if (slideAway)
         {
@@ -196,6 +195,7 @@ public class ImagePool : MonoBehaviour
         {
             GameObject gridElement = new GameObject();
             gridElement.transform.SetParent(Grid.transform);
+            Vector3 test = Grid.transform.TransformPoint(Vector3.zero);
             gridElement.transform.SetPositionAndRotation(Grid.transform.TransformPoint(Vector3.zero), gridElement.transform.rotation);
             Vector3 localPos = gridElement.transform.position;
             Quaternion localRot = gridElement.transform.rotation;
@@ -326,7 +326,7 @@ public class ImagePool : MonoBehaviour
             if (!destroyMe)
             {
                 StartCoroutine(SelfDestruct(gridElement));
-                StartCoroutine(SlideObject(true, gridElement));
+                StartCoroutine(SlideObject(true, gridElement, localPos));
             }
             //Set up for the next x
             gridElementX += rectWidth;
