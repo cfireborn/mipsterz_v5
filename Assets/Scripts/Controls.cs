@@ -7,6 +7,7 @@ public class Controls : MonoBehaviour
 {
     public GameObject Controls1;
     public GameObject Controls2;
+    public GameObject Controls3;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,12 +23,14 @@ public class Controls : MonoBehaviour
             {
                 Controls1.SetActive(false);
                 Controls2.SetActive(false);
+                Controls3.SetActive(false);
                 enabled = false;
             }
             else
             {
                 Controls1.SetActive(true);
                 Controls2.SetActive(true);
+                Controls3.SetActive(true);
                 enabled = true;
             }
         }
