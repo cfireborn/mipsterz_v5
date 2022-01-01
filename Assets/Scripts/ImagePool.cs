@@ -369,6 +369,11 @@ public class ImagePool : MonoBehaviour
             localPos.y += Screen.height / 20.0f;
             Grid.transform.SetPositionAndRotation(localPos, Grid.transform.rotation);
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("quitting");
+            Application.Quit();
+        }
     }
 }
 //     void Awake()
