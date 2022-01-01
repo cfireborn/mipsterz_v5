@@ -169,6 +169,7 @@ public class ImagePool : MonoBehaviour
             {
                 // set color with i as alpha
                 gridElement.transform.position = initialpos + Vector3.down * offset * ((i * i) / (seconds * seconds));
+                Debug.Log("Curr offset:" + offset * ((i * i) / (seconds * seconds)));
                 yield return null;
             }
             gridElement.transform.position = initialpos;
@@ -326,7 +327,9 @@ public class ImagePool : MonoBehaviour
             if (!destroyMe)
             {
                 StartCoroutine(SelfDestruct(gridElement));
-                StartCoroutine(SlideObject(true, gridElement, localPos));
+                Vector3 testpos = localPos;
+                testpos.y -= 180.233f;
+                StartCoroutine(SlideObject(true, gridElement, testpos));
             }
             //Set up for the next x
             gridElementX += rectWidth;
